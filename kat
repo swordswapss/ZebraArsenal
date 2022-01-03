@@ -1,0 +1,949 @@
+
+
+Client = {
+  Modules = {
+    ClientEnvoirment,
+    ClientMain,
+    CreateProj,
+    CretTrail,
+    ModsShit
+  },
+  Toggles = {
+    Walkspeed = false,
+    JumpPower = false,
+    BHop = false,
+    InstantRespawn = false,
+    AntiAim = false,
+    AutoAmmo = false,
+    AutoHealth = false,
+    Godmode = false,
+    CrazyArrows = false,
+    FFA = false,
+    Baseball = false,
+    Snow = false,
+    Trac = false,
+    Sight = false,
+    FOV = false,
+    GreenSmoke = false,
+    Visiblecheck = false,
+    SilentAim = false,
+    FireRate = false,
+    Bombs = false
+  },
+  Values = {
+    JumpPower = 50,
+    LookMeth = "Look Up",
+    Test = "",
+    FOV = 150,
+    ChatMsg = "Bolts Hub Winning",
+    AimPart = "Head"
+  }
+}
+main = loadstring(game:HttpGet("https://pastebin.com/raw/aYUmuQrm"))():Window()
+CombatW = main:Tab("Combat")
+Bolts = main:Tab("LocalPlayer")
+ServerW = main:Tab("Trolling/FE")
+VisualsW = main:Tab("Visuals")
+MiscW = main:Tab("Credits & Info")
+function ClosestPlayer()
+  for fg, fh in pairs(va.GetPlayers(va)) do
+    if fh.Character.FindFirstChild(fh.Character, "Head") and vb.WorldToScreenPoint(vb, fh.Character.FindFirstChild(fh.Character, "Head").Position) and math.huge > Vector2.new(vb.WorldToScreenPoint(vb, fh.Character.FindFirstChild(fh.Character, "Head").Position).X, vb.WorldToScreenPoint(vb, fh.Character.FindFirstChild(fh.Character, "Head").Position).Y) - Vector2.new(vc.X, vc.Y).Magnitude and Vector2.new(vb.WorldToScreenPoint(vb, fh.Character.FindFirstChild(fh.Character, "Head").Position).X, vb.WorldToScreenPoint(vb, fh.Character.FindFirstChild(fh.Character, "Head").Position).Y) - Vector2.new(vc.X, vc.Y).Magnitude <= Client.Values.FOV then
+    end
+  end
+  return fh
+end
+function GetAimPart()
+  if Client.Values.AimPart == "Head" then
+    return "Head"
+  end
+  if Client.Values.AimPart == "LowerTorso" then
+    return "LowerTorso"
+  end
+  if Client.Values.AimPart == "Random" then
+    if math.random(1, 4) == 1 then
+      return "Head"
+    else
+      return "LowerTorso"
+    end
+  end
+end
+setreadonly(getrawmetatable(game), false)
+getrawmetatable(game).__namecall = newcclosure(function(a)
+  NamecallMethod = getnamecallmethod()
+  if tostring(NamecallMethod) == "FindPartOnRayWithIgnoreList" and Client.Toggles.WallBang then
+    table.insert({
+      ...
+    }[2], workspace.Map)
+  end
+  if NamecallMethod == "FindPartOnRayWithIgnoreList" and not checkcaller() and Client.Toggles.SilentAim and ClosestPlayer() and ClosestPlayer().Character and ClosestPlayer().Character.FindFirstChild(ClosestPlayer().Character, GetAimPart()) then
+    return vb(a, unpack({
+      ...
+    }))
+  end
+  if tostring(NamecallMethod) == "FireServer" and tostring(a) == "ControlTurn" and Client.Toggles.AntiAim == true then
+    if Client.Values.LookMeth == "Look Up" then
+    end
+    if Client.Values.LookMeth == "Look Down" then
+    end
+    if Client.Values.LookMeth == "Torso In Legs" then
+    end
+    return vb(a, unpack({
+      ...
+    }))
+  end
+  return vb(a, ...)
+end)
+setreadonly(getrawmetatable(game), true)
+Drawing.new("Circle").Thickness = 2
+Drawing.new("Circle").NumSides = 460
+Drawing.new("Circle").Filled = false
+Drawing.new("Circle").Transparency = 0,6
+Drawing.new("Circle").Radius = Client.Values.FOV
+Drawing.new("Circle").Color = Color3.new(255, 0, 0)
+game:GetService("RunService").Stepped:Connect(function()
+  if Client.Toggles.FireRate == true then
+    Client.Modules.ClientEnvoirment.DISABLED = false
+    Client.Modules.ClientEnvoirment.DISABLED2 = false
+  end
+  if Client.Toggles.NoRecoil == true then
+    Client.Modules.ClientEnvoirment.recoil = 0
+  end
+  if Client.Toggles.NoSpread == true then
+    Client.Modules.ClientEnvoirment.currentspread = 0
+    Client.Modules.ClientEnvoirment.spreadmodifier = 0
+  end
+  if Client.Toggles.AlwaysAuto == true then
+    Client.Modules.ClientEnvoirment.mode = "automatic"
+  end
+  if Client.Toggles.InfAmmo == true then
+    debug.setupvalue(Client.Modules.ModsShit, 3, 70)
+  end
+  va.Radius = Client.Values.FOV
+  if Client.Toggles.FOV == true then
+    va.Visible = true
+  else
+    va.Visible = false
+  end
+  va.Position = game:GetService("UserInputService"):GetMouseLocation()
+end)
+spawn(function()
+  while true do
+    wait()
+    if Client.Toggles.KillAura then
+      for fd, fe in pairs(game.Players:GetPlayers()) do
+        if fe and fe ~= game.Players.LocalPlayer and fe.Character and fe.Character:FindFirstChild("Head") and game.Players.LocalPlayer.Character.PrimaryPart.Position - fe.Character.PrimaryPart.Position.magnitude <= 12 then
+          game:GetService("ReplicatedStorage").Events.FallDamage:FireServer(1000, fe.Character:FindFirstChild("Hitbox"))
+        end
+      end
+    end
+  end
+end)
+game:GetService("RunService").Stepped:Connect(function()
+  if Client.Toggles.CrazyArrows == true then
+    if Client.Toggles.FFA == false then
+      for fd, fe in pairs(game.Players:GetPlayers()) do
+        if fe.Team ~= game.Players.LocalPlayer.Team and fe ~= game.Players.LocalPlayer then
+          YesTable = {
+            [1] = game:GetService("Workspace").Map.Clips,
+            [2] = game:GetService("Workspace").Debris,
+            [3] = game.Players.LocalPlayer.Character,
+            [4] = game:GetService("Workspace").Ray_Ignore,
+            [5] = game:GetService("Workspace").Map.Spawns,
+            [6] = game:GetService("Workspace").Map.Ignore
+          }
+          for fk, fl in pairs(game.Players:GetPlayers()) do
+            if fl.Character then
+              YesTable[6 + fk] = fl
+            end
+          end
+          game:GetService("ReplicatedStorage").Events.ReplicateProjectile:FireServer({
+            [1] = "Arrow",
+            [2] = 800,
+            [3] = fe.Character.Head.Position,
+            [4] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame,
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Crossbow",
+            [10] = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          })
+          Client.Modules.CreateProj(game.Players.LocalPlayer.Name, unpack({
+            [1] = "Arrow",
+            [2] = 800,
+            [3] = fe.Character.Head.Position,
+            [4] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame,
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Crossbow",
+            [10] = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          }))
+        end
+      end
+    else
+      for fd, fe in pairs(game.Players:GetPlayers()) do
+        if fe ~= game.Players.LocalPlayer then
+          YesTable = {
+            [1] = game:GetService("Workspace").Map.Clips,
+            [2] = game:GetService("Workspace").Debris,
+            [3] = game.Players.LocalPlayer.Character,
+            [4] = game:GetService("Workspace").Ray_Ignore,
+            [5] = game:GetService("Workspace").Map.Spawns,
+            [6] = game:GetService("Workspace").Map.Ignore
+          }
+          for fk, fl in pairs(game.Players:GetPlayers()) do
+            if fl.Character then
+              YesTable[6 + fk] = fl
+            end
+          end
+          game:GetService("ReplicatedStorage").Events.ReplicateProjectile:FireServer({
+            [1] = "Arrow",
+            [2] = 800,
+            [3] = fe.Character.Head.Position,
+            [4] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame,
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Crossbow",
+            [10] = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          })
+          Client.Modules.CreateProj(game.Players.LocalPlayer.Name, unpack({
+            [1] = "Arrow",
+            [2] = 800,
+            [3] = fe.Character.Head.Position,
+            [4] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame,
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Crossbow",
+            [10] = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          }))
+        end
+      end
+    end
+  end
+end)
+spawn(function()
+  while true do
+    wait(0,1)
+    pcall(function()
+      if Client.Toggles.Baseball then
+        for fd, fe in pairs(game.Players:GetPlayers()) do
+          YesTable = {
+            [1] = game:GetService("Workspace").Map.Clips,
+            [2] = game:GetService("Workspace").Debris,
+            [3] = game.Players.LocalPlayer.Character,
+            [4] = game:GetService("Workspace").Ray_Ignore,
+            [5] = game:GetService("Workspace").Map.Spawns,
+            [6] = game:GetService("Workspace").Map.Ignore
+          }
+          for fk, fl in pairs(game.Players:GetPlayers()) do
+            if fl.Character then
+              YesTable[6 + fk] = fl
+            end
+          end
+          game:GetService("ReplicatedStorage").Events.ReplicateProjectile:FireServer({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Baseball Launcher",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          })
+          Client.Modules.CreateProj(fe.Name, unpack({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Baseball Launcher",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          }))
+        end
+        for fd, fe in pairs(game.Players:GetPlayers()) do
+          YesTable = {
+            [1] = game:GetService("Workspace").Map.Clips,
+            [2] = game:GetService("Workspace").Debris,
+            [3] = game.Players.LocalPlayer.Character,
+            [4] = game:GetService("Workspace").Ray_Ignore,
+            [5] = game:GetService("Workspace").Map.Spawns,
+            [6] = game:GetService("Workspace").Map.Ignore
+          }
+          for fk, fl in pairs(game.Players:GetPlayers()) do
+            if fl.Character then
+              YesTable[6 + fk] = fl
+            end
+          end
+          game:GetService("ReplicatedStorage").Events.ReplicateProjectile:FireServer({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Baseball Launcher",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          })
+          Client.Modules.CreateProj(fe.Name, unpack({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Baseball Launcher",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          }))
+        end
+      end
+    end)
+  end
+end)
+spawn(function()
+  while true do
+    wait(0)
+    pcall(function()
+      if Client.Toggles.Snow then
+        for fd, fe in pairs(game.Players:GetPlayers()) do
+          YesTable = {
+            [1] = game:GetService("Workspace").Map.Clips,
+            [2] = game:GetService("Workspace").Debris,
+            [3] = game.Players.LocalPlayer.Character,
+            [4] = game:GetService("Workspace").Ray_Ignore,
+            [5] = game:GetService("Workspace").Map.Spawns,
+            [6] = game:GetService("Workspace").Map.Ignore
+          }
+          for fk, fl in pairs(game.Players:GetPlayers()) do
+            if fl.Character then
+              YesTable[6 + fk] = fl
+            end
+          end
+          game:GetService("ReplicatedStorage").Events.ReplicateProjectile:FireServer({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Snowball",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          })
+          Client.Modules.CreateProj(fe.Name, unpack({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Snowball",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          }))
+          YesTable = {
+            [1] = game:GetService("Workspace").Map.Clips,
+            [2] = game:GetService("Workspace").Debris,
+            [3] = game.Players.LocalPlayer.Character,
+            [4] = game:GetService("Workspace").Ray_Ignore,
+            [5] = game:GetService("Workspace").Map.Spawns,
+            [6] = game:GetService("Workspace").Map.Ignore
+          }
+          for fm, fo in pairs(game.Players:GetPlayers()) do
+            if fo.Character then
+              YesTable[6 + fm] = fo
+            end
+          end
+          game:GetService("ReplicatedStorage").Events.ReplicateProjectile:FireServer({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Snowball",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          })
+          Client.Modules.CreateProj(fe.Name, unpack({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Snowball",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          }))
+        end
+      end
+      if Client.Toggles.Bombs then
+        for fd, fe in pairs(game.Players:GetPlayers()) do
+          YesTable = {
+            [1] = game:GetService("Workspace").Map.Clips,
+            [2] = game:GetService("Workspace").Debris,
+            [3] = game.Players.LocalPlayer.Character,
+            [4] = game:GetService("Workspace").Ray_Ignore,
+            [5] = game:GetService("Workspace").Map.Spawns,
+            [6] = game:GetService("Workspace").Map.Ignore
+          }
+          for fk, fl in pairs(game.Players:GetPlayers()) do
+            if fl.Character then
+              YesTable[6 + fk] = fl
+            end
+          end
+          game:GetService("ReplicatedStorage").Events.ReplicateProjectile:FireServer({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Flaming Pumpkin",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          })
+          Client.Modules.CreateProj(fe.Name, unpack({
+            [1] = "Baseball",
+            [2] = 173,
+            [3] = fe.Character.Head.Position,
+            [4] = fe.Character.HumanoidRootPart.CFrame + Vector3.new(-10, math.random(0, 15), 0),
+            [5] = 100,
+            [6] = 0,
+            [7] = 0,
+            [8] = 0,
+            [9] = "Flaming Pumpkin",
+            [10] = fe.Character.HumanoidRootPart.Position,
+            [11] = false,
+            [13] = YesTable,
+            [15] = false,
+            [16] = 142,0182788372
+          }))
+        end
+      end
+    end)
+  end
+end)
+spawn(function()
+  while true do
+    wait(0)
+    pcall(function()
+      if Client.Toggles.Trac then
+        for fd, fe in pairs(game.Players:GetPlayers()) do
+          if fe ~= game.Players.LocalPlayer then
+            Camera = game.workspace.CurrentCamera
+            Camera = {
+              CFrame = CFrame.new(Camera.CFrame.p, fe.Character.Head.Position)
+            }
+            x = Camera.CFrame.LookVector
+            YesTable = {
+              [1] = game:GetService("Workspace").Map.Clips,
+              [2] = game:GetService("Workspace").Debris,
+              [3] = game.Players.LocalPlayer.Character,
+              [4] = game:GetService("Workspace").Ray_Ignore,
+              [5] = game:GetService("Workspace").Map.Spawns,
+              [6] = game:GetService("Workspace").Map.Ignore
+            }
+            for fm, fo in pairs(game.Players:GetPlayers()) do
+              if fo.Character then
+                YesTable[6 + fm] = fo
+              end
+            end
+            game:GetService("ReplicatedStorage").Events.Trail:FireServer(game.Players.LocalPlayer.Character.PrimaryPart.CFrame * CFrame.Angles(0, 0, 0), x, YesTable, Color3.fromRGB(math.random(1, 255), math.random(1, 255), math.random(1, 255)), "Railgun", game.Players.LocalPlayer.Character.PrimaryPart)
+            Client.Modules.CretTrail(game.Players.LocalPlayer.Character.PrimaryPart.CFrame * CFrame.Angles(0, 0, 0), x, YesTable, Color3.fromRGB(math.random(1, 255), math.random(1, 255), math.random(1, 255)), "Railgun", game.Players.LocalPlayer.Character.PrimaryPart, game.Players.LocalPlayer.Name)
+          end
+        end
+      end
+    end)
+  end
+end)
+spawn(function()
+  while true do
+    wait(0)
+    pcall(function()
+      if Client.Toggles.Sight then
+        game:GetService("ReplicatedStorage").Events.Trail:FireServer(game.Players.LocalPlayer.Character.PrimaryPart.CFrame * CFrame.Angles(0, 0, 0), game.workspace.CurrentCamera.CFrame.lookVector * 999, {
+          workspace.Map.Clips,
+          game.Workspace.Debris,
+          game.Players.LocalPlayer.Character,
+          game.Workspace.Ray_Ignore,
+          workspace.CurrentCamera,
+          game.Workspace:WaitForChild("Map"):WaitForChild("Spawns"),
+          game.Workspace:WaitForChild("Map"):WaitForChild("Ignore")
+        }, Color3.fromRGB(math.random(1, 255), math.random(1, 255), math.random(1, 255)), "Railgun", game.Players.LocalPlayer.Character.PrimaryPart)
+        Client.Modules.CretTrail(game.Players.LocalPlayer.Character.PrimaryPart.CFrame * CFrame.Angles(0, 0, 0), game.workspace.CurrentCamera.CFrame.lookVector * 999, {
+          workspace.Map.Clips,
+          game.Workspace.Debris,
+          game.Players.LocalPlayer.Character,
+          game.Workspace.Ray_Ignore,
+          workspace.CurrentCamera,
+          game.Workspace:WaitForChild("Map"):WaitForChild("Spawns"),
+          game.Workspace:WaitForChild("Map"):WaitForChild("Ignore")
+        }, Color3.fromRGB(math.random(1, 255), math.random(1, 255), math.random(1, 255)), "Railgun", game.Players.LocalPlayer.Character.PrimaryPart, game.Players.LocalPlayer.Name)
+      end
+    end)
+  end
+end)
+spawn(function()
+  while true do
+    wait()
+    if Client.Toggles.BHop == true then
+      game.Players.LocalPlayer.Character.Humanoid.Jump = true
+    end
+    if Client.Toggles.JumpPower == true then
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = Client.Values.JumpPower
+    end
+    if Client.Toggles.InstantRespawn == true and not game.Players.LocalPlayer.Character:FindFirstChild("Spawned") and game:GetService("Players").LocalPlayer.Character:FindFirstChild("Cam") and game.Players.LocalPlayer.PlayerGui.Menew.Enabled == false then
+      game:GetService("ReplicatedStorage").Events.LoadCharacter:FireServer()
+      wait(0,5)
+    end
+  end
+end)
+function RandomPlr()
+  tempPlrs = {}
+  for fd, fe in pairs(game.Players:GetPlayers()) do
+    if fe and fe ~= game.Players.LocalPlayer and fe.Character and fe.Character:FindFirstChild("Head") and fe.Team ~= game.Players.LocalPlayer.Team and fe.Character:FindFirstChild("Spawned") then
+      table.insert(tempPlrs, fe)
+    end
+  end
+  return tempPlrs[math.random(1, #tempPlrs)]
+end
+function SwitchToKnife()
+  game:GetService("VirtualInputManager"):SendKeyEvent(true, 51, false, game)
+  game:GetService("VirtualInputManager"):SendKeyEvent(false, 51, false, game)
+end
+function KnifeKill()
+  OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+  Target = RandomPlr()
+  game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(Target.Character.Head.CFrame * CFrame.new(0, 2, 3))
+  SwitchToKnife()
+  wait(0,2)
+  for fe = 1, 20 do
+    SwitchToKnife()
+    wait()
+    for fl, fm in pairs((function()
+      if not game.ReplicatedStorage.wkspc.Status.RoundOver.Value and not game.ReplicatedStorage.wkspc.Status.Preparation.Value and game.Players.LocalPlayer.Status.Team.Value ~= "Spectator" then
+        for fe, fg in pairs(game.Players:GetChildren()) do
+          if game.ReplicatedStorage.wkspc.FFA.Value and fg ~= game.Players.LocalPlayer and fg.Character and not fg.Character:FindFirstChild("ShuckyHAX") and fg.Character:FindFirstChild("Spawned") then
+            table.insert({}, fg)
+          end
+        end
+      end
+      return {}
+    end)()) do
+      game.ReplicatedStorage.Events.HitPart:FireServer(fm.Character.Head, (string.pack(debug.getconstant(require(game:GetService("ReplicatedStorage").Modules.ClientFunctions).CreateProjectile, 105), fm.Character.Head.Position + Vector3.new(math.random(), math.random(), math.random()).X, fm.Character.Head.Position + Vector3.new(math.random(), math.random(), math.random()).Y, fm.Character.Head.Position + Vector3.new(math.random(), math.random(), math.random()).Z, tostring(game.Players.LocalPlayer.PlayerGui.GUI.Client.Variables.gun.Value), 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0)))
+    end
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+  end
+end
+function KillAll()
+  for fe, fg in pairs((function()
+    if not game.ReplicatedStorage.wkspc.Status.RoundOver.Value and not game.ReplicatedStorage.wkspc.Status.Preparation.Value and game.Players.LocalPlayer.Status.Team.Value ~= "Spectator" then
+      for fe, fg in pairs(game.Players:GetChildren()) do
+        if game.ReplicatedStorage.wkspc.FFA.Value and fg ~= game.Players.LocalPlayer and fg.Character and not fg.Character:FindFirstChild("ShuckyHAX") and fg.Character:FindFirstChild("Spawned") then
+          table.insert({}, fg)
+        end
+      end
+    end
+    return {}
+  end)()) do
+    game.ReplicatedStorage.Events.HitPart:FireServer(fg.Character.Head, (string.pack(debug.getconstant(require(game:GetService("ReplicatedStorage").Modules.ClientFunctions).CreateProjectile, 105), fg.Character.Head.Position + Vector3.new(math.random(), math.random(), math.random()).X, fg.Character.Head.Position + Vector3.new(math.random(), math.random(), math.random()).Y, fg.Character.Head.Position + Vector3.new(math.random(), math.random(), math.random()).Z, tostring(game.Players.LocalPlayer.PlayerGui.GUI.Client.Variables.gun.Value), 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0)))
+  end
+end
+CombatW:Toggle("Silent Aim (3rd Person Only)", function(a)
+  Client.Toggles.SilentAim = a
+end)
+CombatW:Dropdown("Aim Part", {
+  "Head",
+  "LowerTorso",
+  "Random"
+}, function(a)
+  Client.Values.AimPart = a
+end)
+CombatW:Toggle("WallBang", function(a)
+  Client.Toggles.WallBang = a
+end)
+CombatW:Toggle("Draw FOV", function(a)
+  Client.Toggles.FOV = a
+end)
+CombatW:Slider("FOV", 10, 750, function(a)
+  Client.Values.FOV = a
+end)
+Bolts:Toggle("Infinite Jump", function(a)
+  Client.Toggles.InfJump = a
+end)
+game:GetService("UserInputService").JumpRequest:connect(function()
+  if Client.Toggles.InfJump == true then
+    game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+  end
+end)
+Bolts:Button("Server Hop", function()
+  game.Players.LocalPlayer:Kick("Teleporting")
+  coroutine.wrap(function()
+    for fd = 0, math.huge do
+      for fk = 1, fd do
+      end
+      game.Players.LocalPlayer:Kick("Server Hoping" .. "" .. ".")
+      wait(0,5)
+    end
+  end)()
+  for fe, fg in pairs(game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?limit=100")).data) do
+    if fg.playing < fg.maxPlayers then
+      table.insert({}, fg.id)
+    end
+  end
+  while wait(1) do
+    game.TeleportService:TeleportToPlaceInstance(game.PlaceId, {}[math.random(1, #{})])
+  end
+end)
+Bolts:Toggle("BHop", function(a)
+  Client.Toggles.BHop = a
+end)
+for fz, fq in pairs(setmetatable({
+  LocalPlayer = game:GetService("Players").LocalPlayer,
+  Camera = workspace.CurrentCamera
+}, {
+  __index = function(a, b)
+    return rawget(a, b) or game:GetService(b)
+  end
+}).Players:GetPlayers()) do
+  if fq ~= setmetatable({
+    LocalPlayer = game:GetService("Players").LocalPlayer,
+    Camera = workspace.CurrentCamera
+  }, {
+    __index = function(a, b)
+      return rawget(a, b) or game:GetService(b)
+    end
+  }).LocalPlayer then
+    {
+      IsAlive = function(a, b)
+        if b and b.Character and b.Character:FindFirstChild("Head") and workspace:FindFirstChild(b.Character.Name) then
+          return true
+        end
+      end,
+      Round = function(a, b)
+        return math.floor(tonumber(b) + 0,5)
+      end,
+      DrawSquare = function(a)
+        Drawing.new("Square").Color = Color3.fromRGB(190, 190, 0)
+        Drawing.new("Square").Thickness = 0,5
+        Drawing.new("Square").Filled = false
+        Drawing.new("Square").Transparency = 1
+        return (Drawing.new("Square"))
+      end,
+      DrawLine = function(a)
+        Drawing.new("Line").Color = Color3.new(190, 190, 0)
+        Drawing.new("Line").Thickness = 0,5
+        return (Drawing.new("Line"))
+      end,
+      DrawText = function(a)
+        Drawing.new("Text").Color = Color3.fromRGB(190, 190, 0)
+        Drawing.new("Text").Size = 20
+        Drawing.new("Text").Outline = true
+        Drawing.new("Text").Center = true
+        return (Drawing.new("Text"))
+      end,
+      AddEsp = function(a, b)
+        vb.RunService.Stepped:Connect(function()
+          if va:IsAlive(vb) and vb.Character:FindFirstChild("HumanoidRootPart") then
+            if vd.Visuals.BoxEsp then
+              ve.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              ve.Size = Vector2.new(2350 / vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).Z + 2,5, vc.Camera:WorldToViewportPoint(vb.Character.Head.Position + Vector3.new(0, 0,5, 0)).Y - vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position - Vector3.new(0, 4, 0)).Y)
+              ve.Position = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).X - ve.Size.X / 2 - 1, vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).Y - ve.Size.Y / 2)
+            else
+              ve.Visible = false
+            end
+            if vd.Visuals.TracerEsp then
+              vg.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              if vd.Visuals.TracersOrigin == "Top" then
+                vg.To = Vector2.new(vc.Camera.ViewportSize.X / 2, 0)
+                vg.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).X - 1, vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).Y + (vc.Camera:WorldToViewportPoint(vb.Character.Head.Position + Vector3.new(0, 0,5, 0)).Y - vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position - Vector3.new(0, 4, 0)).Y) / 2)
+              elseif vd.Visuals.TracersOrigin == "Middle" then
+                vg.To = Vector2.new(vc.Camera.ViewportSize.X / 2, vc.Camera.ViewportSize.Y / 2)
+                vg.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).X - 1, vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).Y + (vc.Camera:WorldToViewportPoint(vb.Character.Head.Position + Vector3.new(0, 0,5, 0)).Y - vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position - Vector3.new(0, 4, 0)).Y) / 2 - (vc.Camera:WorldToViewportPoint(vb.Character.Head.Position + Vector3.new(0, 0,5, 0)).Y - vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position - Vector3.new(0, 4, 0)).Y) / 2)
+              elseif vd.Visuals.TracersOrigin == "Bottom" then
+                vg.To = Vector2.new(vc.Camera.ViewportSize.X / 2, 1000)
+                vg.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).X - 1, vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).Y - (vc.Camera:WorldToViewportPoint(vb.Character.Head.Position + Vector3.new(0, 0,5, 0)).Y - vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position - Vector3.new(0, 4, 0)).Y) / 2)
+              elseif vd.Visuals.TracersOrigin == "Mouse" then
+                vg.To = game:GetService("UserInputService"):GetMouseLocation()
+                vg.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).X - 1, vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position).Y + (vc.Camera:WorldToViewportPoint(vb.Character.Head.Position + Vector3.new(0, 0,5, 0)).Y - vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position - Vector3.new(0, 4, 0)).Y) / 2 - (vc.Camera:WorldToViewportPoint(vb.Character.Head.Position + Vector3.new(0, 0,5, 0)).Y - vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position - Vector3.new(0, 4, 0)).Y) / 2)
+              end
+            else
+              vg.Visible = false
+            end
+            if vd.Visuals.NameEsp then
+              vh.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vh.Position = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).Y - 40)
+              vh.Text = "[ " .. vb.Name .. " ]"
+            else
+              vh.Visible = false
+            end
+            if vd.Visuals.DistanceEsp and vb.Character:FindFirstChild("Head") then
+              vj.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vj.Position = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).Y - 25)
+              vj.Text = "[ " .. va:Round(game:GetService("Players").LocalPlayer.Character.Head.Position - vb.Character.Head.Position.Magnitude) .. " Studs ]"
+            else
+              vj.Visible = false
+            end
+            if vd.Visuals.SkeletonEsp then
+              vk.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vk.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).Y)
+              vk.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LowerTorso.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LowerTorso.Position).Y)
+              vl.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vl.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).Y + (vc.Camera:WorldToViewportPoint(vb.Character.UpperTorso.Position).Y - vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).Y) / 3)
+              vl.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperArm.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperArm.Position).Y)
+              vm.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vm.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LeftLowerArm.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LeftLowerArm.Position).Y)
+              vm.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperArm.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperArm.Position).Y)
+              vo.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vo.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).Y + (vc.Camera:WorldToViewportPoint(vb.Character.UpperTorso.Position).Y - vc.Camera:WorldToViewportPoint(vb.Character.Head.Position).Y) / 3)
+              vo.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.RightUpperArm.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.RightUpperArm.Position).Y)
+              vp.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vp.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.RightLowerArm.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.RightLowerArm.Position).Y)
+              vp.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.RightUpperArm.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.RightUpperArm.Position).Y)
+              vn.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vn.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LowerTorso.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LowerTorso.Position).Y)
+              vn.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperLeg.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperLeg.Position).Y)
+              vr.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vr.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LeftLowerLeg.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LeftLowerLeg.Position).Y)
+              vr.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperLeg.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LeftUpperLeg.Position).Y)
+              vs.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vs.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.RightLowerLeg.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.RightLowerLeg.Position).Y)
+              vs.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.RightUpperLeg.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.RightUpperLeg.Position).Y)
+              vt.Visible = vc.Camera:WorldToViewportPoint(vb.Character.HumanoidRootPart.Position)
+              vt.From = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.LowerTorso.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.LowerTorso.Position).Y)
+              vt.To = Vector2.new(vc.Camera:WorldToViewportPoint(vb.Character.RightUpperLeg.Position).X, vc.Camera:WorldToViewportPoint(vb.Character.RightUpperLeg.Position).Y)
+            else
+              vk.Visible = false
+              vl.Visible = false
+              vm.Visible = false
+              vo.Visible = false
+              vp.Visible = false
+              vn.Visible = false
+              vr.Visible = false
+              vs.Visible = false
+              vt.Visible = false
+            end
+            if game.Players.LocalPlayer.TeamColor ~= vb.TeamColor then
+              ve.Color = vd.Visuals.EnemyColor
+              vg.Color = vd.Visuals.EnemyColor
+              vh.Color = vd.Visuals.EnemyColor
+              vj.Color = vd.Visuals.EnemyColor
+              vk.Color = vd.Visuals.EnemyColor
+              vl.Color = vd.Visuals.EnemyColor
+              vm.Color = vd.Visuals.EnemyColor
+              vo.Color = vd.Visuals.EnemyColor
+              vp.Color = vd.Visuals.EnemyColor
+              vn.Color = vd.Visuals.EnemyColor
+              vr.Color = vd.Visuals.EnemyColor
+              vs.Color = vd.Visuals.EnemyColor
+              vt.Color = vd.Visuals.EnemyColor
+            else
+              ve.Color = vd.Visuals.TeamColor
+              vg.Color = vd.Visuals.TeamColor
+              vh.Color = vd.Visuals.TeamColor
+              vj.Color = vd.Visuals.TeamColor
+              vk.Color = vd.Visuals.TeamColor
+              vl.Color = vd.Visuals.TeamColor
+              vm.Color = vd.Visuals.TeamColor
+              vo.Color = vd.Visuals.TeamColor
+              vp.Color = vd.Visuals.TeamColor
+              vn.Color = vd.Visuals.TeamColor
+              vr.Color = vd.Visuals.TeamColor
+              vs.Color = vd.Visuals.TeamColor
+              vt.Color = vd.Visuals.TeamColor
+            end
+          else
+            ve.Visible = false
+            vg.Visible = false
+            vh.Visible = false
+            vj.Visible = false
+            vk.Visible = false
+            vl.Visible = false
+            vm.Visible = false
+            vo.Visible = false
+            vp.Visible = false
+            vn.Visible = false
+            vr.Visible = false
+            vs.Visible = false
+            vt.Visible = false
+          end
+        end)
+      end
+    }:AddEsp(fq)
+  end
+end
+setmetatable({
+  LocalPlayer = game:GetService("Players").LocalPlayer,
+  Camera = workspace.CurrentCamera
+}, {
+  __index = function(a, b)
+    return rawget(a, b) or game:GetService(b)
+  end
+}).Players.PlayerAdded:Connect(function(a)
+  if v ~= va.LocalPlayer then
+    vb:AddEsp(a)
+  end
+end)
+VisualsW:Button("Rainbow Gun", function()
+  function zigzag(a)
+    return math.acos(math.cos(a * math.pi)) / math.pi
+  end
+  game:GetService("RunService").RenderStepped:Connect(function()
+    if game.Workspace.Camera:FindFirstChild("Arms") then
+      for fd, fe in pairs(game.Workspace.Camera.Arms:GetDescendants()) do
+        if fe.ClassName == "MeshPart" then
+          fe.Color = Color3.fromHSV(zigzag(va), 1, 1)
+          va = va + 0,0001
+        end
+      end
+    end
+  end)
+end)
+VisualsW:Toggle("Boxs", function(a)
+  va.Visuals.BoxEsp = a
+end)
+VisualsW:Toggle("Tracers", function(a)
+  va.Visuals.TracerEsp = a
+end)
+VisualsW:Dropdown("Tracers Origin", {
+  "Top",
+  "Middle",
+  "Bottom",
+  "Mouse"
+}, function(a)
+  va.Visuals.TracersOrigin = a
+end)
+VisualsW:Toggle("Names", function(a)
+  va.Visuals.NameEsp = a
+end)
+VisualsW:Toggle("Distance", function(a)
+  va.Visuals.DistanceEsp = a
+end)
+VisualsW:Toggle("Skeletons", function(a)
+  va.Visuals.SkeletonEsp = a
+end)
+VisualsW:Colorpicker("Team Color", Color3.fromRGB(0, 255, 0), function(a)
+  va.Visuals.TeamColor = a
+end)
+VisualsW:Colorpicker("Enemy Color", Color3.fromRGB(255, 0, 0), function(a)
+  va.Visuals.EnemyColor = a
+end)
+function fireButton1(a)
+  for fe, fg in next, getconnections(a.MouseButton1Click) do
+    fg:Fire()
+  end
+  for fe, fg in next, getconnections(a.MouseButton1Down) do
+    fg:Fire()
+  end
+  for fe, fg in next, getconnections(a.Activated) do
+    fg:Fire()
+  end
+end
+function fireButton2(a)
+  for fe, fg in next, getconnections(a.MouseButton2Click) do
+    fg:Fire()
+  end
+  for fe, fg in next, getconnections(a.MouseButton2Down) do
+    fg:Fire()
+  end
+  for fe, fg in next, getconnections(a.Activated) do
+    fg:Fire()
+  end
+end
+function CheckStateUI()
+  if game.Players.LocalPlayer.PlayerGui.Menew.Enabled == true then
+    fireButton1(game.Players.LocalPlayer.PlayerGui.Menew.Main.Play)
+    wait(0,5)
+    game.Players.LocalPlayer.PlayerGui.Menew.Main.Visible = false
+    for fd, fe in pairs(game.Players.LocalPlayer.PlayerGui.GUI.TeamSelection.Buttons:GetChildren()) do
+      if not fe:FindFirstChild("lock").Visible == true then
+        fireButton1(fe)
+        wait(2)
+      else
+      end
+    end
+  end
+end
+FarmingW:Label("Auto Farm Soon! (In The Works")
+MiscW:Label("Zebra Ware - Kat")
+MiscW:Label("RightShift To Toggle The Gui :D")
+MiscW:Label("discord.gg/moat")
+MiscW:Label("f10#1337 - Owner")
+MiscW:Label("f10#1337 Bug Fixer")
+MiscW:Label("f10#1337 lol")
+MiscW:Label("kiwioncaprisun#3588 and N0mad#5342 helped too")
+MiscW:Label("creds to dark hub for lib")
+print("cock - f10#1337")
