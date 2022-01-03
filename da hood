@@ -1,0 +1,333 @@
+
+
+
+Client = {
+  Toggles = {
+    CashRegFarm = false,
+    AutoFarm = false,
+    CashDropRegFarm = false,
+    WalkSpeed = false
+  },
+  Values = {Walkspeed = 16}
+}
+function GetCombat()
+  if game.Players.LocalPlayer.Character:FindFirstChild("Combat") then
+    return game.Players.LocalPlayer.Character:FindFirstChild("Combat")
+  elseif game.Players.LocalPlayer.Backpack:FindFirstChild("Combat") then
+    game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Combat"))
+    return game.Players.LocalPlayer.Character:FindFirstChild("Combat")
+  else
+    return nil
+  end
+end
+function GrabCash()
+  for fd, fe in pairs(game:GetService("Workspace").Ignored.Drop:GetChildren()) do
+    if fe.Name == "MoneyDrop" and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and fe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position.magnitude < 15 then
+      fireclickdetector(fe.ClickDetector)
+      wait(0,3)
+    end
+  end
+end
+function GetCash()
+  for fd, fe in pairs(game:GetService("Workspace").Ignored.Drop:GetChildren()) do
+    if fe.Name == "MoneyDrop" and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and fe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position.magnitude < 15 then
+      return fe
+    end
+  end
+  return nil
+end
+function GetCashRegister()
+  for fd, fe in pairs(game:GetService("Workspace").Cashiers:GetChildren()) do
+    if fe:FindFirstChild("Humanoid") and fe:FindFirstChild("Head") and fe.Humanoid.Health > 0 and fe:FindFirstChild("Open") then
+      return fe
+    end
+  end
+end
+function GetShoes()
+  for fd, fe in pairs(game:GetService("Workspace").Ignored.Drop:GetChildren()) do
+    if fe.Name == "MeshPart" and fe:FindFirstChild("ClickDetector") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+      game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(fe.CFrame.p + Vector3.new(0, 2, 0)))
+      wait(0,4)
+      fireclickdetector(fe.ClickDetector)
+    end
+  end
+  if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character.BodyEffects.ShoesCollect.Value ~= 0 then
+    game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(game:GetService("Workspace").Ignored["Clean the shoes on the floor and come to me for cash"].HumanoidRootPart.CFrame.p + Vector3.new(2, 2, 0)))
+    wait(0,2)
+    fireclickdetector(game:GetService("Workspace").Ignored["Clean the shoes on the floor and come to me for cash"].ClickDetector)
+  end
+end
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Autofarm"):Toggle("AutoFarm", function(a)
+  Client.Toggles.AutoFarm = a
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Toggle("WalkSpeed", function(a)
+  Client.Toggles.WalkSpeed = a
+  if game.Players.LocalPlayer.Character:FindFirstChild("Animate") then
+    getsenv(game.Players.LocalPlayer.Character.Animate).checkingSPEED = function()
+      return nil
+    end
+  end
+  if Client.Toggles.WalkSpeed == true then
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Client.Values.WalkSpeed
+  else
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+  end
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Slider("WalkSpeed Value", 10, 150, function(a)
+  Client.Values.WalkSpeed = a
+  if Client.Toggles.WalkSpeed == true then
+    if game.Players.LocalPlayer.Character:FindFirstChild("Animate") then
+      getsenv(game.Players.LocalPlayer.Character.Animate).checkingSPEED = function()
+        return nil
+      end
+    end
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Client.Values.WalkSpeed
+  end
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Toggle("Inf Jump", function(a)
+  Client.Toggles.InfJump = a
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Toggle("No Clip", function(a)
+  Client.Toggles.NoClip = a
+end)
+game:GetService("RunService").Stepped:Connect(function()
+  if Client.Toggles.NoClip then
+    for fd, fe in ipairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+      if fe:IsA("BasePart") then
+        fe.CanCollide = false
+      end
+    end
+  end
+end)
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+  if game.Players.LocalPlayer.Character:FindFirstChild("Animate") then
+    getsenv(game.Players.LocalPlayer.Character.Animate).checkingSPEED = function()
+      return nil
+    end
+  end
+  if Client.Toggles.WalkSpeed == true then
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Client.Values.WalkSpeed
+  end
+end)
+game.Players.LocalPlayer.CharacterAdded:Connect(function(a)
+  repeat
+    wait()
+  until a:FindFirstChild("Humanoid")
+  a.Humanoid.WalkSpeed = 17
+  a.Humanoid.JumpPower = 51
+  a.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+    if game.Players.LocalPlayer.Character:FindFirstChild("Animate") then
+      getsenv(game.Players.LocalPlayer.Character.Animate).checkingSPEED = function()
+        return nil
+      end
+    end
+    if Client.Toggles.WalkSpeed == true then
+      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Client.Values.WalkSpeed
+    end
+  end)
+  a.Humanoid:GetPropertyChangedSignal("JumpPower"):Connect(function()
+    if Client.Toggles.JumpPower == true then
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = Client.Values.JumpPower
+    end
+  end)
+end)
+game:GetService("UserInputService").JumpRequest:connect(function()
+  if Client.Toggles.InfJump then
+    game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+  end
+end)
+Drawing.new("Circle").Color = Color3.new(255, 0, 0)
+Drawing.new("Circle").Thickness = 1,5
+Drawing.new("Circle").Radius = {
+  Silent = false,
+  FovUsed = false,
+  Fov = 100,
+  Boxes = false,
+  Names = false
+}.Fov
+Drawing.new("Circle").Visible = {
+  Silent = false,
+  FovUsed = false,
+  Fov = 100,
+  Boxes = false,
+  Names = false
+}.FovUsed
+Drawing.new("Circle").NumSides = 13
+Drawing.new("Circle").Filled = false
+Drawing.new("Circle").Transparency = 1
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Toggle("Silent Aim", function(a)
+  va.Silent = a
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Toggle("Use Fov", function(a)
+  va.FovUsed = a
+  vb.Visible = a
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Slider("Fov", 1, 1000, function(a)
+  va.Fov = a
+  vb.Radius = a
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Toggle("Box Esp", function(a)
+  va.Boxes = a
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Main"):Toggle("Name Esp", function(a)
+  va.Names = a
+end)
+loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Teleports"):Textbox("Tp To Player", false, function(a)
+  if va:FindFirstChild(a) then
+    vb.Character:MoveTo(va[a].Character.HumanoidRootPart.Position)
+  end
+end)
+for fW, fE in pairs({
+  ["Tyrones Guns"] = Vector3.new(481,709137, 48,0050011, -607,184204),
+  ["Tyrones Guns 2"] = Vector3.new(-565,284302, 7,99984598, -737,196106),
+  ["Hood Fitness"] = Vector3.new(-73,8321609, 21,755003, -589,94519),
+  ["Hood Kicks"] = Vector3.new(-191,520126, 21,755003, -410,607056),
+  ["Da Furniture"] = Vector3.new(-490,54541, 21,75, -125,106834),
+  ["Da Casino"] = Vector3.new(-903,9823, 21,75, -167,42247),
+  ["Da Bank"] = Vector3.new(-422,269836, 22,6496277, -284,017639),
+  ["Hospital"] = Vector3.new(85,076828, 21,755003, -486,052185),
+  ["Police Station"] = Vector3.new(-268,431824, 21,2549973, -132,52446),
+  ["Gas Station"] = Vector3.new(568,421204, 49,0000458, -257,565735),
+  ["Klips"] = Vector3.new(13,4705801, 21,75, -117,35498)
+}) do
+  loadstring(game:HttpGet("https://pastebin.com/raw/azTHXJBf"))():Window():Tab("Teleports"):Button(fW, function()
+    va.Character:MoveTo(vb)
+  end)
+end
+function DrawText()
+  Drawing.new("Text").Color = Color3.fromRGB(190, 190, 0)
+  Drawing.new("Text").Size = 20
+  Drawing.new("Text").Outline = true
+  Drawing.new("Text").Center = true
+  return (Drawing.new("Text"))
+end
+function DrawSquare()
+  Drawing.new("Square").Color = Color3.fromRGB(190, 190, 0)
+  Drawing.new("Square").Thickness = 0,5
+  Drawing.new("Square").Filled = false
+  Drawing.new("Square").Transparency = 1
+  return (Drawing.new("Square"))
+end
+function IsPlayerAlive(a)
+  if a.Character ~= nil and a.Character:FindFirstChild("HumanoidRootPart") then
+    return true
+  end
+  return false
+end
+function GetOffset(a, b)
+  return va:WorldToViewportPoint(Vector3.new(a.Position.X, a.Position.Y + a.Size.Y / 2, a.Position.Z)).Y - b.Y
+end
+function GetCorners(a)
+  for fm, fo in next, a.Character:GetChildren() do
+    if fo.Name == "Head" then
+      if va:WorldToViewportPoint(fo.Position) then
+      end
+    end
+  end
+  return {
+    TopLeft = Vector2.new(va:WorldToViewportPoint(fo.Position).X + GetOffset(fo, va:WorldToViewportPoint(fo.Position)), va:WorldToViewportPoint(fo.Position).Y + GetOffset(fo, va:WorldToViewportPoint(fo.Position))),
+    TopRight = Vector2.new(va:WorldToViewportPoint(fo.Position).X - GetOffset(fo, va:WorldToViewportPoint(fo.Position)), va:WorldToViewportPoint(fo.Position).Y + GetOffset(fo, va:WorldToViewportPoint(fo.Position))),
+    BottomLeft = Vector2.new(va:WorldToViewportPoint(fo.Position).X + GetOffset(fo, va:WorldToViewportPoint(fo.Position)), va:WorldToViewportPoint(fo.Position).Y - GetOffset(fo, va:WorldToViewportPoint(fo.Position))),
+    BottomRight = Vector2.new(va:WorldToViewportPoint(fo.Position).X - GetOffset(fo, va:WorldToViewportPoint(fo.Position)), va:WorldToViewportPoint(fo.Position).Y - GetOffset(fo, va:WorldToViewportPoint(fo.Position))),
+    Positions = {
+      [fo.Name] = va:WorldToViewportPoint(fo.Position)
+    }
+  }
+end
+function GetClosest()
+  for fg, fh in next, va:GetPlayers() do
+    if fh ~= vb and fh.Character and fh.Character:FindFirstChild("HumanoidRootPart") and vc:WorldToScreenPoint(fh.Character.HumanoidRootPart.Position) then
+      if not vd.FovUsed then
+      end
+      if vd.FovUsed and math.huge > Vector2.new(vb:GetMouse().X, vb:GetMouse().Y) - Vector2.new(vc:WorldToScreenPoint(fh.Character.HumanoidRootPart.Position).X, vc:WorldToScreenPoint(fh.Character.HumanoidRootPart.Position).Y).Magnitude and Vector2.new(vb:GetMouse().X, vb:GetMouse().Y) - Vector2.new(vc:WorldToScreenPoint(fh.Character.HumanoidRootPart.Position).X, vc:WorldToScreenPoint(fh.Character.HumanoidRootPart.Position).Y).Magnitude < vd.Fov then
+      end
+    end
+  end
+  return fh
+end
+setreadonly(getrawmetatable(game), false)
+getrawmetatable(game).__index = newcclosure(function(a, b)
+  if va.Silent and a == vb and b == "Hit" and vc ~= nil then
+    return CFrame.new(vc.Character.Head.Position)
+  end
+  return vd(a, b)
+end)
+setreadonly(getrawmetatable(game), true)
+function AddEsp(a)
+  va.Stepped:Connect(function()
+    IsAlive = IsPlayerAlive(va)
+    if IsAlive and va.Character:FindFirstChild("HumanoidRootPart") then
+      if vc.Boxes then
+        vd.Visible = vb:WorldToViewportPoint(va.Character.HumanoidRootPart.Position)
+        vd.Size = Vector2.new(GetCorners(va).BottomRight.X - GetCorners(va).TopLeft.X, GetCorners(va).BottomRight.Y - GetCorners(va).TopLeft.Y)
+        vd.Position = GetCorners(va).TopLeft
+      else
+        vd.Visible = false
+      end
+      if vc.Names then
+        ve.Visible = vb:WorldToViewportPoint(va.Character.HumanoidRootPart.Position)
+        ve.Position = Vector2.new(GetCorners(va).BottomRight.X - (GetCorners(va).BottomRight.X - GetCorners(va).TopLeft.X) / 2, GetCorners(va).TopLeft.Y - 45)
+        ve.Text = "[ " .. va.Name .. " ]"
+      else
+        ve.Visible = false
+      end
+    else
+      vd.Visible = false
+      ve.Visible = false
+    end
+  end)
+end
+for fW, fE in pairs(game:GetService("Players"):GetPlayers()) do
+  if fE ~= game:GetService("Players").LocalPlayer then
+    AddEsp(fE)
+  end
+end
+game:GetService("Players").PlayerAdded:Connect(function(a)
+  if v ~= va then
+    AddEsp(a)
+  end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+  vb.Position = Vector2.new(va:GetMouseLocation().X, va:GetMouseLocation().Y)
+  vc = GetClosest()
+end)
+while true do
+  wait()
+  pcall(function()
+    if Client.Toggles.AutoFarm then
+      CurrCash = GetCashRegister()
+      if CurrCash ~= nil then
+        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CurrCash.Head.CFrame * CFrame.new(0,4, 0, 3))
+        Combat = GetCombat()
+        Combat:Activate()
+        repeat
+          wait(1,2)
+          game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CurrCash.Head.CFrame * CFrame.new(0,4, 0, 3))
+          Combat = GetCombat()
+          Combat:Activate()
+          repeat
+            wait(0,1)
+            GrabCash()
+          until GetCash() == nil or Client.Toggles.AutoFarm == false
+        until Client.Toggles.AutoFarm == false
+      else
+        if Client.Toggles.CashRegFarm == true then
+          GetShoes()
+        end
+        if Client.Toggles.CashDropRegFarm and game:GetService("Workspace").Ignored.HospitalJob:FindFirstChildOfClass("Model") then
+          for fd, fe in pairs(game:GetService("Workspace").Ignored.HospitalJob:GetChildren()) do
+            if fe:IsA("Part") and string.match(game:GetService("Workspace").Ignored.HospitalJob:FindFirstChildOfClass("Model").Name, fe.Name) and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+              game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(fe.CFrame * CFrame.new(0,2, 0, -2))
+              wait(0,5)
+              fireclickdetector(fe.ClickDetector)
+              wait(0,2)
+              if game:GetService("Workspace").Ignored.HospitalJob:FindFirstChildOfClass("Model") then
+                fireclickdetector(game:GetService("Workspace").Ignored.HospitalJob:FindFirstChildOfClass("Model").ClickDetector)
+              end
+            end
+          end
+        end
+      end
+    end
+  end)
+end
