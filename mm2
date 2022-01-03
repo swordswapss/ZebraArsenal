@@ -1,0 +1,149 @@
+spawn(function()
+  game:GetService("RunService").RenderStepped:Connect(function()
+    do return end
+    while true do
+      if game.Players:GetPlayers().Character and game.Players:GetPlayers().Character:FindFirstChild("Humanoid") and game.Players:GetPlayers().Character.Humanoid.Health ~= 0 and game.Players:GetPlayers().Character:FindFirstChild("HumanoidRootPart") then
+        for fk, fl in pairs(game.Players:GetPlayers():GetChildren()) do
+          if fl.Name == "Backpack" then
+            if fl:FindFirstChild("Battleaxe") then
+              va.toggles.Murder = game.Players:GetPlayers().Name
+            end
+          end
+        end
+      end
+    end
+    for fd, fe in pairs(game.Players:GetPlayers()) do
+      if fe.Character:FindFirstChild("Battleaxe") then
+        va.toggles.Murder = fe.Name
+      end
+    end
+    do return end
+    while true do
+      if game.Players:GetPlayers().Character and game.Players:GetPlayers().Character:FindFirstChild("Humanoid") and game.Players:GetPlayers().Character.Humanoid.Health ~= 0 and game.Players:GetPlayers().Character:FindFirstChild("HumanoidRootPart") then
+        for fk, fl in pairs(game.Players:GetPlayers():GetChildren()) do
+          if fl.Name == "Backpack" then
+            if fl:FindFirstChild("Revolver") then
+              va.toggles.Sheriff = game.Players:GetPlayers().Name
+            end
+          end
+        end
+      end
+    end
+    for fd, fe in pairs(game.Players:GetPlayers()) do
+      if fe.Character:FindFirstChild("Revolver") then
+        va.toggles.Sheriff = fe.Name
+      end
+    end
+  end)
+end)
+main = loadstring(game:HttpGet("https://pastebin.com/raw/MQxeKAGB"))():Window()
+Mainz = main:Tab("Combat")
+Character = main:Tab("Character")
+Visual = main:Tab("Visuals")
+Mainz:Toggle("Silent-Aim", function(a)
+  va.toggles.silent = a
+end)
+Visual:Button("Blurt-Roles", function(a)
+  game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("The Mur Is: " .. va.toggles.Murder, "normalchat")
+  game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("The Sheriff Is: " .. va.toggles.Sheriff, "normalchat")
+end)
+Drawing.new("Circle").Color = Color3.fromRGB(190, 190, 0)
+Drawing.new("Circle").Thickness = 0,5
+Drawing.new("Circle").NumSides = 16
+Drawing.new("Circle").Filled = false
+Drawing.new("Circle").Transparency = 1
+Mainz:Slider("FOV", 0, 1000, function(a)
+  va.toggles.FOV = a
+end)
+Mainz:Toggle("Draw-FOV", function(a)
+  va.toggles.DrawFOV = a
+end)
+Mainz:Colorpicker("FOV Color", Color3.fromRGB(225, 0, 0), function(a)
+  va.Color = a
+end)
+Mainz:Dropdown("Aim Bone", {
+  "Random",
+  "Head",
+  "LowerTorso"
+}, function(a)
+  va.toggles.aimbone = a
+end)
+Mainz:Toggle("Throw Knives to Crossair", function(a)
+  va.toggles.throwknives = a
+end)
+Mainz:Button("Grab Dropped Gun", function(a)
+  if game.Worksapce("GunDrop") then
+    box = Instance.new("Part", workspace)
+    box.Name = "DarkHub"
+    box.Anchored = true
+    box.CanCollide = false
+    box.Size = Vector3.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+    game.Workspace.DarkHub.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+    wait(0,45)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.GunDrop.Position)
+    wait(0,45)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.DarkHub.Position)
+  end
+end)
+Mainz:Button("Kill All (Murder)", function(a)
+  for fe, fg in pairs(game.Players:GetPlayers()) do
+    if fg.Name ~= game.Players.LocalPlayer.Name then
+      game.Players.LocalPlayer.Character.Knife.Throw:FireServer(CFrame.new(fg.Character.Head.Position), fg.Character.Head.Position - Vector3.new(0, -1, 0))
+    end
+  end
+end)
+Mainz:Button("Kill Murder (Sheriff)", function(a)
+  box = Instance.new("Part", workspace)
+  box.Name = "DarkHub"
+  box.Anchored = true
+  box.CanCollide = false
+  box.Size = Vector3.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+  game.Workspace.DarkHub.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+  wait(0,45)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players[va.toggles.Murder].Character.HumanoidRootPart.Position - Vector3.new(0, -5, 0))
+  wait(0,45)
+  game:GetService("Players").LocalPlayer.Character.Gun.KnifeServer.ShootGun:InvokeServer(1, game.Players[va.toggles.Murder].Character.HumanoidRootPart.Position, "AH")
+  wait(0,45)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.DarkHub.Position)
+end)
+Character:Button("Floss", function()
+  game:GetService("ReplicatedStorage").PlayEmote:Fire("floss")
+end)
+Character:Button("Zen", function()
+  game:GetService("ReplicatedStorage").PlayEmote:Fire("zen")
+end)
+Character:Button("Sit", function()
+  game:GetService("ReplicatedStorage").PlayEmote:Fire("sit")
+end)
+Character:Button("Dab On The Haters", function()
+  game:GetService("ReplicatedStorage").PlayEmote:Fire("dab")
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+  va.Position = game:GetService("UserInputService"):GetMouseLocation()
+  va.Radius = vb.toggles.FOV
+  if vb.toggles.DrawFOV then
+    va.Visible = true
+  else
+    va.Visible = false
+  end
+end)
+pcall(function()
+  game:GetService("RunService").RenderStepped:Connect(function()
+    if va.toggles.throwknives then
+      game.Players.LocalPlayer.Character.Knife.Throw:FireServer(CFrame.new(game.Players.LocalPlayer:GetMouse().hit.p), game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+    end
+    if va.toggles.aimbone == "Head" then
+      va.toggles.aimbone = "Head"
+    end
+    if va.toggles.aimbone == "LowerTorso" then
+      va.toggles.aimbone = "LowerTorso"
+    end
+    if va.toggles.aimbone == "Random" then
+      if math.random(1, 4) == 1 then
+        va.toggles.aimbone = "Head"
+      else
+        va.toggles.aimbone = "LowerTorso"
+      end
+    end
+  end)
+end)
